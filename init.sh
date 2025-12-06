@@ -24,16 +24,22 @@ nft insert "rule netdev filter egress icmpv6 type { nd-router-solicit, nd-neighb
 nft add rule netdev filter egress ip dscp set 0
 nft add rule netdev filter egress ip6 dscp set 0
 
+iptables -D FORWARD -i $LAN_INTERFACE -o $LAN_INTERFACE -j ACCEPT || true
 iptables -A FORWARD -i $LAN_INTERFACE -o $LAN_INTERFACE -j ACCEPT
+iptables -D FORWARD -i $LAN_INTERFACE -o $WAN_INTERFACE.832 -j ACCEPT || true
 iptables -A FORWARD -i $LAN_INTERFACE -o $WAN_INTERFACE.832 -j ACCEPT
+iptables -D FORWARD -i $WAN_INTERFACE.832 -o $LAN_INTERFACE -m state --state ESTABLISHED,RELATED -j ACCEPT || true
 iptables -A FORWARD -i $WAN_INTERFACE.832 -o $LAN_INTERFACE -m state --state ESTABLISHED,RELATED -j ACCEPT
-iptables -t nat -A POSTROUTING -t nat -s $LAN_SUBNET -o $WAN_INTERFACE.832 -j MASQUERADE
+iptables -D POSTROUTING -t nat -s $LAN_SUBNET -o $WAN_INTERFACE.832 -j MASQUERADE || true
+iptables -A POSTROUTING -t nat -s $LAN_SUBNET -o $WAN_INTERFACE.832 -j MASQUERADE
 
+ip6tables -D FORWARD -i $LAN_INTERFACE -o $LAN_INTERFACE -j ACCEPT || true
 ip6tables -A FORWARD -i $LAN_INTERFACE -o $LAN_INTERFACE -j ACCEPT
+ip6tables -D FORWARD -i $LAN_INTERFACE -o $WAN_INTERFACE.832 -j ACCEPT || true
 ip6tables -A FORWARD -i $LAN_INTERFACE -o $WAN_INTERFACE.832 -j ACCEPT
+ip6tables -D FORWARD -i $WAN_INTERFACE.832 -o $LAN_INTERFACE -m state --state ESTABLISHED,RELATED -j ACCEPT || true
 ip6tables -A FORWARD -i $WAN_INTERFACE.832 -o $LAN_INTERFACE -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 echo Done setting up networking
-sleep 2
 
 /usr/local/bin/up-fiber.sh

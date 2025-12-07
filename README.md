@@ -1,7 +1,7 @@
 # Docker Livebox
 
-[![Docker Hub](https://img.shields.io/docker/pulls/raraph84/livebox)](https://hub.docker.com/r/raraph84/livebox)
-[![GitHub](https://img.shields.io/github/license/Raraph84/docker-livebox)](https://github.com/Raraph84/docker-livebox)
+- **GitHub**: https://github.com/Raraph84/docker-livebox
+- **Docker Hub**: https://hub.docker.com/r/raraph84/livebox
 
 A simple Docker image that transforms your host into an Orange Livebox, allowing you to bypass the Orange Livebox router and use your own hardware with Orange fiber (FTTH) in France.
 
@@ -40,8 +40,8 @@ raraph84/livebox
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `FIBER_LOGIN` | `fti/abcdefg` | Your Orange fiber login (format: `fti/xxxxxxx`) |
-| `FIBER_PASSWORD` | `abcdefg` | Your Orange fiber password |
+| `FIBER_LOGIN` | N/A | Your Orange fiber login (format: `fti/xxxxxxx`) |
+| `FIBER_PASSWORD` | N/A | Your Orange fiber password |
 | `LAN_INTERFACE` | `eth0` | The network interface connected to your local network |
 | `WAN_INTERFACE` | `eth1` | The network interface connected to the Orange ONT |
 | `LAN_SUBNET` | `192.168.1.0/24` | Your local network subnet for NAT masquerading |
@@ -81,8 +81,3 @@ docker build -t livebox .
 ## License
 
 This project is provided as-is for educational and personal use.
-
-## Links
-
-- **GitHub**: https://github.com/Raraph84/docker-livebox
-- **Docker Hub**: https://hub.docker.com/r/raraph84/livebox

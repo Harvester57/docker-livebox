@@ -3,18 +3,20 @@ FROM debian:13-slim@sha256:e711a7b30ec1261130d0a121050b4ed81d7fb28aeabcf4ea0c787
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y supervisor iproute2 iptables gettext-base build-essential git ca-certificates && \
+    apt-get install --no-install-recommends -y supervisor iproute2 iptables gettext-base ca-certificates && \
     update-ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/Raraph84/dhclient-orange-patched /tmp/dhclient-orange-patched
-WORKDIR /tmp/dhclient-orange-patched
-RUN ./configure && make && make install && \
+RUN set -eux; \
+    apt-get update && apt-get install -y --no-install-recommends build-essential git && \
+    git clone --depth 1 https://github.com/Raraph84/dhclient-orange-patched /tmp/dhclient-orange-patched && \
+    cd /tmp/dhclient-orange-patched && \
+    ./configure && make && make install && \
     cp /tmp/dhclient-orange-patched/client/scripts/linux /sbin/dhclient-script && chmod +x /sbin/dhclient-script && \
     mkdir -p /var/lib/dhcp /etc/dhclient-enter-hooks.d /etc/dhclient-exit-hooks.d && \
     rm -rf /tmp/dhclient-orange-patched && \
-    apt-get remove -y build-essential git && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get purge -y --auto-remove build-essential git && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY init.sh /usr/local/bin/init.sh

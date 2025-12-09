@@ -1,4 +1,4 @@
-FROM debian:13
+FROM debian:13-slim@sha256:e711a7b30ec1261130d0a121050b4ed81d7fb28aeabcf4ea0c7876d4e9f5aca2
 
 ARG DEBIAN_FRONTEND=noninteractive
 

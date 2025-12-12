@@ -35,7 +35,8 @@ RUN chmod +x /usr/local/bin/init.sh \
     /usr/local/bin/up-fiber.sh \
     /etc/dhclient-enter-hooks.d/no-dns \
     /etc/dhclient-exit-hooks.d/setup-ipv6 \
-    /sbin/dhclient-script
+    /sbin/dhclient-script \
+    /usr/local/sbin/dhclient
 
 ENV LAN_INTERFACE=eth0
 ENV WAN_INTERFACE=eth1
